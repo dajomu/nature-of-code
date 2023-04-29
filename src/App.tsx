@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
-import Introduction from './Chapters/Introduction/Introduction';
+import RandomWalk from './Chapters/Introduction/RandomWalk';
+import RandomNumberDistribution from './Chapters/Introduction/RandomNumberDistribution';
 
 function App() {
   return (
     <div className="App">
-      <Introduction />
+      <RandomWalk />
+      <RandomNumberDistribution />
     </div>
   );
 }
