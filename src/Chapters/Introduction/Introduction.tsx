@@ -2,14 +2,15 @@ import React from "react";
 import Sketch from "react-p5";
 import p5Types from "p5";
 
+import Walker from './Walker';
+
 interface ComponentProps {
   // Your component props
 }
-
-let x = 50;
-const y = 50;
   
 const Introduction: React.FC<ComponentProps> = (props: ComponentProps) => {
+
+  const walker = new Walker(500, 500);
 
   // See annotations in JS for more information
   const setup = (p5: p5Types, canvasParentRef: Element) => {
@@ -17,9 +18,8 @@ const Introduction: React.FC<ComponentProps> = (props: ComponentProps) => {
   };
 
   const draw = (p5: p5Types) => {
-    p5.background(0);
-    p5.ellipse(x, y, 70, 70);
-    x++;
+    walker.step();
+    walker.display(p5);
   };
 
   return <Sketch setup={setup} draw={draw} />;
