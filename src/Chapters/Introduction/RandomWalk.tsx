@@ -10,11 +10,12 @@ interface ComponentProps {
   
 const RandomWalk: React.FC<ComponentProps> = (props: ComponentProps) => {
 
-  const walker = new Walker(500, 500, 0, 0, true);
+  const walker = new Walker(500, 500, 0, 0, false, true);
 
   // See annotations in JS for more information
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     p5.createCanvas(500, 500).parent(canvasParentRef);
+    p5.frameRate(10);
   };
 
   const draw = (p5: p5Types) => {

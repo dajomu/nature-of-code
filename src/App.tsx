@@ -7,8 +7,8 @@ import GaussianDistribution from './Chapters/Introduction/GaussianDistribution';
 function App() {
   return (
     <div className="App">
-      <GaussianDistribution />
       <RandomWalk />
+      <GaussianDistribution />
       <RandomNumberDistribution />
     </div>
   );
