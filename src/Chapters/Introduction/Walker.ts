@@ -1,4 +1,5 @@
 import p5Types from "p5";
+import { montecarloSquared } from "./utils";
 
 export default class Walker {
     x: number;
@@ -10,8 +11,9 @@ export default class Walker {
     useMouseDirection: boolean;
     mouseBiasStrength = 0.5;
     useGaussian: boolean;
+    useSquaredStepSize: boolean;
 
-    constructor(width: number, height: number, biasRight = 0, biasDown = 0, useMouseDirection = false, useGaussian = false) {
+    constructor(width: number, height: number, biasRight = 0, biasDown = 0, useMouseDirection = false, useGaussian = false, useSquaredStepSize = false) {
         this.x = width/2;
         this.y = height/2;
         this.oldX = width/2;
@@ -20,6 +22,7 @@ export default class Walker {
         this.biasDown = biasDown;
         this.useMouseDirection = useMouseDirection;
         this.useGaussian = useGaussian;
+        this.useSquaredStepSize = useSquaredStepSize;
     }
 
     display(p5: p5Types) {
@@ -33,6 +36,7 @@ export default class Walker {
         let mouseBiasX = 0;
         let mouseBiasY = 0;
         const gaussianStepSize = this.useGaussian ? p5.randomGaussian(20, 10) : 1;
+        const squaredStepSize = this.useSquaredStepSize ? montecarloSquared() * 10 : 1;
         if (this.useMouseDirection) {
             if (p5.mouseX - this.x > 0) {
                 mouseBiasX = this.mouseBiasStrength;
@@ -47,8 +51,8 @@ export default class Walker {
 
         }
         
-        const stepx = Math.floor(gaussianStepSize) * Math.floor((Math.random() * (3 + this.biasRight + mouseBiasX) - 1));
-        const stepy = Math.floor(gaussianStepSize) * Math.floor((Math.random() * (3 + this.biasDown + mouseBiasY) - 1));
+        const stepx = Math.floor(gaussianStepSize * squaredStepSize) * Math.floor((Math.random() * (3 + this.biasRight + mouseBiasX) - 1));
+        const stepy = Math.floor(gaussianStepSize * squaredStepSize) * Math.floor((Math.random() * (3 + this.biasDown + mouseBiasY) - 1));
 
         this.x += stepx;
         this.y += stepy;

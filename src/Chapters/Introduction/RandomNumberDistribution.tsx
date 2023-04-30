@@ -1,9 +1,11 @@
 import React from "react";
 import Sketch from "react-p5";
 import p5Types from "p5";
+import {montecarlo, montecarloSquared} from './utils';
 
 interface ComponentProps {
   // Your component props
+  randomType?: 'gaussian' | 'montecarlo' | 'random'
 }
   
 const RandomNumberDistribution: React.FC<ComponentProps> = (props: ComponentProps) => {
@@ -17,8 +19,12 @@ const RandomNumberDistribution: React.FC<ComponentProps> = (props: ComponentProp
 
   const draw = (p5: p5Types) => {
     p5.background(255);
-    const index = Math.floor(p5.randomGaussian(randomCounts.length / 2, randomCounts.length / 8)) //Math.floor(Math.random() * randomCounts.length)
-    console.log(index);
+    let index = Math.floor(Math.random() * randomCounts.length);
+    if (props.randomType === 'gaussian') {
+        index = Math.floor(p5.randomGaussian(randomCounts.length / 2, randomCounts.length / 8));
+    } else if(props.randomType === 'montecarlo') {
+        index = Math.floor(montecarloSquared() * randomCounts.length);
+    }
     if(index < 20) {
         randomCounts[index]++;
     }
