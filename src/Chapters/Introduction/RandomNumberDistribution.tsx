@@ -17,8 +17,11 @@ const RandomNumberDistribution: React.FC<ComponentProps> = (props: ComponentProp
 
   const draw = (p5: p5Types) => {
     p5.background(255);
-    const index = Math.floor(Math.random() * randomCounts.length)
-    randomCounts[index]++;
+    const index = Math.floor(p5.randomGaussian(randomCounts.length / 2, randomCounts.length / 8)) //Math.floor(Math.random() * randomCounts.length)
+    console.log(index);
+    if(index < 20) {
+        randomCounts[index]++;
+    }
     p5.stroke(0);
     p5.fill(175);
     const w = p5.width/randomCounts.length;
