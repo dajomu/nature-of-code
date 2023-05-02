@@ -1,11 +1,11 @@
 import React from 'react';
-import BallNoVector from './BallNoVector';
+import BallVector from './BallVector';
 
 
 function ChapterOne() {
   return (
     <div>
-      <BallNoVector />
+      <BallVector />
     </div>
   );
 }
