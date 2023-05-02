@@ -1,13 +1,11 @@
 import React from 'react';
 import './App.css';
-import IntroductionChapter from './Chapters/Introduction/IntroductionChapter';
-import RandomNumberDistribution from './Chapters/Introduction/RandomNumberDistribution';
-import GaussianDistribution from './Chapters/Introduction/GaussianDistribution';
+import ChapterOne from './Chapters/One-Vectors/ChapterOne';
 
 function App() {
   return (
     <div className="App">
-      <IntroductionChapter />
+      <ChapterOne />
     </div>
   );
 }
