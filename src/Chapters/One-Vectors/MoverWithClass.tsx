@@ -9,7 +9,7 @@ interface ComponentProps {
   
 const MoverWithClass: React.FC<ComponentProps> = (props: ComponentProps) => {
 
-  const mover = new Mover(500, 500);
+  const mover = new Mover(500, 500, true);
 
   // See annotations in JS for more information
   const setup = (p5: p5Types, canvasParentRef: Element) => {
@@ -19,7 +19,7 @@ const MoverWithClass: React.FC<ComponentProps> = (props: ComponentProps) => {
   const draw = (p5: p5Types) => {
     p5.background(255);
     mover.checkEdges(p5);
-    mover.update();
+    mover.update(p5);
     mover.display(p5);
   };
 

@@ -7,19 +7,31 @@ export default class Mover {
     location: PVector;
     velocity: PVector;
     acceleration: PVector;
+    allowKeyboardInput: boolean;
 
-    constructor (width: number, height: number) {
+    constructor (width: number, height: number, allowKeyboardInput = false) {
         this.location = new PVector(Math.floor(staticp5.random(width)),Math.floor(staticp5.random(height)));
         this.velocity = new PVector(staticp5.random(5),staticp5.random(5));
         this.acceleration = new PVector(-0.001,0.01);
-        this.velocity.limit(10);
-        console.log(staticp5.width)
+        this.allowKeyboardInput = allowKeyboardInput;
     }
 
-    update() {
+    update(p5: p5Types) {
+        if (p5.keyIsPressed === true && this.allowKeyboardInput) {
+            if (p5.keyCode === p5.UP_ARROW) {
+                this.acceleration = new PVector(this.velocity.x, this.velocity.y);
+            } else if (p5.keyCode === p5.DOWN_ARROW) {
+                this.acceleration = new PVector(-this.velocity.x, -this.velocity.y);
+            }
+            this.acceleration.normalize();
+            this.acceleration.multiply(0.1);
+        } else {
+            this.acceleration = new PVector(0, 0);
+        }
+        this.acceleration.limit(1);
         this.velocity.add(this.acceleration);
-        this.velocity.limit(10);
-        console.log(this.velocity.magnitude());
+        this.velocity.limit(20);
+        this.location.add(this.velocity);
     }
 
     display(p5: p5Types) {
