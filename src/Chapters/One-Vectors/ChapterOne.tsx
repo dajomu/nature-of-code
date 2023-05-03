@@ -1,11 +1,11 @@
 import React from 'react';
-import BallVector3d from './BallVector3d';
+import MoverWithClass from './MoverWithClass';
 
 
 function ChapterOne() {
   return (
     <div>
-      <BallVector3d />
+      <MoverWithClass />
     </div>
   );
 }

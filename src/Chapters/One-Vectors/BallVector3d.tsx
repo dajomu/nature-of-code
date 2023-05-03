@@ -22,7 +22,7 @@ const BallVector3d: React.FC<ComponentProps> = (props: ComponentProps) => {
     p5.ambientLight(60, 60, 60);
     p5.pointLight(255, 255, 255, 100, 100, 100);
 
-    position.addVector(veolicty);
+    position.add(veolicty);
 
     if ((position.x > p5.width) || (position.x < 0)) {
       veolicty.x = veolicty.x * -1;

@@ -20,7 +20,7 @@ const BallVector: React.FC<ComponentProps> = (props: ComponentProps) => {
   const draw = (p5: p5Types) => {
     p5.background(255);
 
-    position.addVector(veolicty);
+    position.add(veolicty);
 
     if ((position.x > p5.width) || (position.x < 0)) {
       veolicty.x = veolicty.x * -1;
