@@ -1,5 +1,4 @@
 
-
 export default class PVector {
  
     x: number;
@@ -52,6 +51,12 @@ export default class PVector {
             this.normalize();
             this.multiply(max);
         }
+    }
+
+    static random2d(): PVector {
+        const randomVector = new PVector(Math.random(), Math.random());
+        randomVector.normalize();
+        return randomVector;
     }
 }
   
