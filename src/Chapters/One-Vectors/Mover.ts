@@ -2,24 +2,24 @@ import PVector from "./PVector";
 import p5Types from "p5";
 import staticp5 from "../../staticp5";
 
+type AccelerationType = "KEYBOARD" | "RANDOM" | "PERLIN";
+
 export default class Mover {
 
     location: PVector;
     velocity: PVector;
     acceleration: PVector;
-    allowKeyboardInput: boolean;
-    randomAcceleration: boolean;
+    accelerationType: AccelerationType;
 
-    constructor (width: number, height: number, allowKeyboardInput = false, randomAcceleration = false) {
+    constructor (width: number, height: number, accelerationType: AccelerationType = "KEYBOARD") {
         this.location = new PVector(Math.floor(staticp5.random(width)),Math.floor(staticp5.random(height)));
-        this.velocity = new PVector(staticp5.random(5),staticp5.random(5));
+        this.velocity = new PVector(staticp5.random(1),staticp5.random(1));
         this.acceleration = new PVector(-0.001,0.01);
-        this.allowKeyboardInput = allowKeyboardInput;
-        this.randomAcceleration = randomAcceleration;
+        this.accelerationType = accelerationType;
     }
 
     update(p5: p5Types) {
-        if (p5.keyIsPressed === true && this.allowKeyboardInput) {
+        if (p5.keyIsPressed === true && this.accelerationType === "KEYBOARD") {
             if (p5.keyCode === p5.UP_ARROW) {
                 this.acceleration = new PVector(this.velocity.x, this.velocity.y);
             } else if (p5.keyCode === p5.DOWN_ARROW) {
@@ -31,9 +31,11 @@ export default class Mover {
             this.acceleration = new PVector(0, 0);
         }
 
-        if(this.randomAcceleration) {
+        if(this.accelerationType === "RANDOM") {
             this.acceleration = PVector.random2d();
             this.acceleration.multiply(Math.random() - 0.5);
+        } else if (this.accelerationType === "PERLIN") {
+            this.acceleration = new PVector(p5.noise(this.location.x) - 0.5, p5.noise(this.location.y) - 0.5);
         }
         this.acceleration.limit(1);
         this.velocity.add(this.acceleration);
