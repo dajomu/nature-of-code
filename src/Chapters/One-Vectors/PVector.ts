@@ -58,5 +58,21 @@ export default class PVector {
         randomVector.normalize();
         return randomVector;
     }
+
+    static add(vector1: PVector, vector2: PVector): PVector {
+        return new PVector(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z);
+    }
+
+    static subtract(vector1: PVector, vector2: PVector) {
+        return new PVector(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z);
+    }
+
+    static multiply(vector1: PVector, factor: number) {
+        return new PVector(vector1.x * factor, vector1.y * factor, vector1.z * factor);
+    }
+
+    static divide(vector1: PVector, factor: number) {
+        return new PVector(vector1.x / factor, vector1.y / factor, vector1.z / factor);
+    }
 }
   

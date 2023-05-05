@@ -9,7 +9,7 @@ interface ComponentProps {
   
 const MoverWithClass: React.FC<ComponentProps> = (props: ComponentProps) => {
 
-  const mover = new Mover(500, 500, "PERLIN");
+  const mover = new Mover(500, 500, "MOUSE");
 
   // See annotations in JS for more information
   const setup = (p5: p5Types, canvasParentRef: Element) => {

@@ -2,7 +2,7 @@ import PVector from "./PVector";
 import p5Types from "p5";
 import staticp5 from "../../staticp5";
 
-type AccelerationType = "KEYBOARD" | "RANDOM" | "PERLIN";
+type AccelerationType = "KEYBOARD" | "RANDOM" | "PERLIN" | "MOUSE";
 
 export default class Mover {
 
@@ -10,36 +10,70 @@ export default class Mover {
     velocity: PVector;
     acceleration: PVector;
     accelerationType: AccelerationType;
+    topSpeed = 5;
 
     constructor (width: number, height: number, accelerationType: AccelerationType = "KEYBOARD") {
         this.location = new PVector(Math.floor(staticp5.random(width)),Math.floor(staticp5.random(height)));
         this.velocity = new PVector(staticp5.random(1),staticp5.random(1));
         this.acceleration = new PVector(-0.001,0.01);
         this.accelerationType = accelerationType;
+        if (accelerationType === "KEYBOARD") {
+            this.topSpeed = 2;
+        }
     }
 
-    update(p5: p5Types) {
-        if (p5.keyIsPressed === true && this.accelerationType === "KEYBOARD") {
-            if (p5.keyCode === p5.UP_ARROW) {
-                this.acceleration = new PVector(this.velocity.x, this.velocity.y);
-            } else if (p5.keyCode === p5.DOWN_ARROW) {
-                this.acceleration = new PVector(-this.velocity.x, -this.velocity.y);
-            }
+    setKeyboardAcceleration(p5: p5Types) {
+        if (p5.keyIsPressed === true && p5.keyCode === p5.UP_ARROW) {
+            this.acceleration = new PVector(this.velocity.x, this.velocity.y);
             this.acceleration.normalize();
             this.acceleration.multiply(0.1);
+            this.acceleration.limit(1);
+        } else if (p5.keyIsPressed === true && p5.keyCode === p5.DOWN_ARROW) {
+            this.acceleration = new PVector(-this.velocity.x, -this.velocity.y);
+            this.acceleration.normalize();
+            this.acceleration.multiply(0.1);
+            this.acceleration.limit(1);
         } else {
             this.acceleration = new PVector(0, 0);
         }
+    }
 
-        if(this.accelerationType === "RANDOM") {
-            this.acceleration = PVector.random2d();
-            this.acceleration.multiply(Math.random() - 0.5);
-        } else if (this.accelerationType === "PERLIN") {
-            this.acceleration = new PVector(p5.noise(this.location.x) - 0.5, p5.noise(this.location.y) - 0.5);
+    setRandomAcceleration(p5: p5Types) {
+        this.acceleration = PVector.random2d();
+        this.acceleration.multiply(Math.random() - 0.5);
+    }
+
+    setNoisyAcceleration(p5: p5Types) {
+        this.acceleration = new PVector(p5.noise(this.location.x) - 0.5, p5.noise(this.location.y) - 0.5);
+        this.acceleration.limit(0.2);
+    }
+
+    setMouseAcceleration(p5: p5Types) {
+        const mouse = new PVector(p5.mouseX, p5.mouseY);
+        const dir = PVector.subtract(mouse, this.location);
+        dir.normalize();
+        dir.multiply(0.5);
+        this.acceleration = dir;
+    }
+
+    update(p5: p5Types) {
+        switch(this.accelerationType) {
+            case "KEYBOARD":
+                this.setKeyboardAcceleration(p5);
+                break;
+            case "RANDOM":
+                this.setRandomAcceleration(p5);
+                break;
+            case "PERLIN":
+                this.setNoisyAcceleration(p5);
+                break;
+            case "MOUSE":
+                this.setMouseAcceleration(p5);
+                break;
         }
-        this.acceleration.limit(1);
+
         this.velocity.add(this.acceleration);
-        this.velocity.limit(20);
+        this.velocity.limit(this.topSpeed);
         this.location.add(this.velocity);
     }
 
